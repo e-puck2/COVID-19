@@ -339,7 +339,10 @@ static void gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param
             //esp_log_buffer_hex(COEX_TAG, scan_result->scan_rst.bda, 6);
             //ESP_LOGI(COEX_TAG, "Searched Adv Data Len %d, Scan Response Len %d", scan_result->scan_rst.adv_data_len, scan_result->scan_rst.scan_rsp_len);			
             adv_name = esp_ble_resolve_adv_data(scan_result->scan_rst.ble_adv, ESP_BLE_AD_TYPE_NAME_CMPL, &adv_name_len);
-            ESP_LOGI(COEX_TAG, "Searched Device Name Len %d (rrsi=%d)", adv_name_len, scan_result->scan_rst.rssi);
+			if(adv_name_len == 0) {
+				break;
+			}
+            ESP_LOGI(COEX_TAG, "Searched Device Name Len %d (rrsi=%d)", adv_name_len, scan_result->scan_rst.rssi);			
             esp_log_buffer_char(COEX_TAG, adv_name, adv_name_len);
             //ESP_LOGI(COEX_TAG, "\n");
 			current_id = atoi((char*)&adv_name[9]); // Advertised name is something like this "e-puck2_#####_X".
